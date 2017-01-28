@@ -5,8 +5,8 @@
         </template>
         <md-card class="example-card">
             <md-card-content>
-        <pre class="">
-            <code class="language-php">
+                <pre class="">
+                    <code class="language-php">
 <?php
 
 namespace App\Models;
@@ -30,7 +30,7 @@ class {{ model$.pluck('name') | async }} extends Model
 
 
     public $fillable = [
-        <template ngFor let-field [ngForOf]="(model$.pluck('fields').filter(((val) => val.fillable == true)) | async)"> '{{field.name}}' : '{{field.validations}}',
+        <template ngFor let-field [ngForOf]="(fields$) | async"> '{{field.name}}',
         </template>
     ];
 

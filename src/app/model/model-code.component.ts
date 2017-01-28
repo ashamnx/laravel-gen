@@ -14,6 +14,7 @@ templateUrl: './model-code.component.html',
 })
 export class ModelCodeComponent {
     @select('model') model$: Observable<string>;
+    @select(state => state.model.fields.filter(n => n.fillable == true)) fields$: Observable<any>;
 
     keyword: string;
 

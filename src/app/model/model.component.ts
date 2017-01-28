@@ -16,6 +16,7 @@ import { IAppState } from '../store';
 export class ModelComponent {
 
   @select('model') model$: Observable<string>;
+  @select(state => state.model.fields.filter(n => n.fillable == true)) fields$: Observable<any>;
 
   constructor(
       public actions: ModelActions,
