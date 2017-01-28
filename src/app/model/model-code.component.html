@@ -1,0 +1,109 @@
+<md-card class="example-card">
+    <md-card-header>
+        <md-card-title>{{ model$.pluck('name') | async}}.php Model Code </md-card-title>
+    </md-card-header>
+    <md-card-content>
+        <pre>
+<?php
+
+namespace App\Models;
+
+use Eloquent as Model;
+{{ (model$.pluck('softDelete') | async) ? 'use Illuminate\Database\Eloquent\SoftDeletes;' : ''}}
+
+/**
+ * Class {{ model$.pluck('name') | async }}
+ * @package App\Models
+ * @version January 27, 2017, 6:26 am UTC
+ */
+class {{ model$.pluck('name') | async }} extends Model
+{{'{'}}
+    {{ (model$.pluck('softDelete') | async) ? 'use SoftDeletes;' : ''}}
+
+    public $table = '{{ model$.pluck('name') | async | lowercase | pluralize}}';
+
+
+    protected $dates = [{{ (model$.pluck('softDelete') | async) ? '\'deleted_at\'' : ''}}];
+
+
+    public $fillable = [
+
+    ];
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+
+    ];
+
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+
+    ];
+
+
+{{'}'}}
+        </pre>
+    </md-card-content>
+    <md-card-actions>
+        <button md-button color="primary">DOWNLOAD</button>
+        <button md-button color="accent">COPY</button>
+    </md-card-actions>
+</md-card>
+<br>
+<md-card class="example-card">
+    <md-card-header>
+        <md-card-title>create_{{ model$.pluck('name') | async | lowercase | pluralize }}_table.php Migration Code </md-card-title>
+    </md-card-header>
+    <md-card-content>
+<pre>
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+
+class Create{{ model$.pluck('name') | async | pluralize }}Table extends Migration
+{{'{'}}
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {{'{'}}
+        Schema::create('{{ model$.pluck('name') | async | lowercase | pluralize }}', function (Blueprint $table) {{'{'}}
+            $table->increments('id');
+            $table->text('name');
+
+            {{ (model$.pluck('timestamps') | async) ? '$table->timestamps();' : ''}}
+            {{ (model$.pluck('softDelete') | async) ? '$table->softDeletes();' : ''}}
+
+    {{'}'}});
+    {{'}'}}
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {{'{'}}
+        Schema::drop('{{ model$.pluck('name') | async | lowercase | pluralize }}');
+    {{'}'}}
+
+{{'}'}}
+</pre>
+    </md-card-content>
+    <md-card-actions>
+        <button md-button color="primary">DOWNLOAD</button>
+        <button md-button color="accent">COPY</button>
+    </md-card-actions>
+</md-card>

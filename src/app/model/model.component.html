@@ -1,0 +1,20 @@
+<md-card class="example-card">
+    <md-card-content fxLayout="column" fxLayoutAlign="center stretch">
+        <md-input-container>
+            <input
+                    id='model-input'
+                    type="text"
+                    class="search"
+                    placeholder="Model Name (Eg, Post)"
+                    md-input
+                    #field (keyup)="handleKeyUp(field.value)"/>
+        </md-input-container>
+        <p>You entered: {{ model$.pluck('name') | async }}<p>
+        <section class="example-section">
+            <md-checkbox class="example-margin" (ngModelChange)="optionChange($event, 'UPDATE_SOFT_DELETE')" [(ngModel)]="softdeletes">Soft Deletes</md-checkbox>
+            <md-checkbox class="example-margin" (ngModelChange)="optionChange($event, 'UPDATE_MIGRATE')" [(ngModel)]="migration">Migration</md-checkbox>
+            <md-checkbox class="example-margin" (ngModelChange)="optionChange($event, 'UPDATE_TIMESTAMPS')" [(ngModel)]="timestamps">Time Stamps</md-checkbox>
+        </section>
+
+    </md-card-content>
+</md-card>

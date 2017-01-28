@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
+@import url(https://fonts.googleapis.com/icon?family=Roboto+Condensed);
+
+body{
+    font-family: 'Roboto Condensed', sans-serif;
+    margin: 0;
+}
+
+.md-padding{
+    padding:1em;
+}
+
+pre {
+    background: rgba(0, 0, 0, 0.77);
+    color: white;
+    padding: 1em;
+    border-radius: 3px;
+}
