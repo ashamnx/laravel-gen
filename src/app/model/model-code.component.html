@@ -88,8 +88,11 @@ class Create{{ model$.pluck('name') | async | pluralize }}Table extends Migratio
     public function up()
     {{'{'}}
         Schema::create('{{ model$.pluck('name') | async | lowercase | pluralize }}', function (Blueprint $table) {{'{'}}
-            $table->increments('id');
-            $table->text('name');
+            <template ngFor let-dbfield [ngForOf]="(dbfields$ | async)"> {{dbfield}}
+            </template>
+            <template>
+                {{ dbfield | async }}
+            </template>
 
             {{ (model$.pluck('timestamps') | async) ? '$table->timestamps();' : ''}}
             {{ (model$.pluck('softDelete') | async) ? '$table->softDeletes();' : ''}}

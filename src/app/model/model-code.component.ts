@@ -15,6 +15,7 @@ templateUrl: './model-code.component.html',
 export class ModelCodeComponent {
     @select('model') model$: Observable<string>;
     @select(state => state.model.fields.filter(n => n.fillable == true)) fields$: Observable<any>;
+    @select(state => state.model.fields.map(n => n.db = '$table->'+n.db_type+'(\''+n.name+'\');')) dbfields$: Observable<any>;
 
     keyword: string;
 

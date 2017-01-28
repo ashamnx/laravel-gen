@@ -13,7 +13,7 @@ body{
 }
 
 pre {
-    background: rgba(0, 0, 0, 0.10);
+    background: rgba(0, 0, 0, 0.8);
     color: white;
     padding: 1em;
     border-radius: 3px;
@@ -25,6 +25,7 @@ pre {
 
 .material-table > thead > tr > th {
     text-align: left;
+    opacity: 0.54;
 }
 
 .material-table th, .material-table td  {
