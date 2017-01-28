@@ -5,6 +5,7 @@
 body{
     font-family: 'Roboto Condensed', sans-serif;
     margin: 0;
+    background: #FAFAFA;
 }
 
 .md-padding{
@@ -12,8 +13,32 @@ body{
 }
 
 pre {
-    background: rgba(0, 0, 0, 0.77);
+    background: rgba(0, 0, 0, 0.10);
     color: white;
     padding: 1em;
     border-radius: 3px;
+}
+
+.material-table {
+    width: 100%;
+}
+
+.material-table > thead > tr > th {
+    text-align: left;
+}
+
+.material-table th, .material-table td  {
+    padding:0.5em;
+    border-bottom: 1px solid ghostwhite;
+}
+
+.example-card{
+    margin: 0.5em;
+}
+
+h3.filename {
+    margin-left: 0.5em;
+    font-weight: 100;
+    color: #969696;
+    font-family: "Roboto";
 }

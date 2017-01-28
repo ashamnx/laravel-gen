@@ -5,15 +5,34 @@ import { tassign } from 'tassign';
 export interface IModelState {
     name: string;
     softDelete: boolean;
-    migrate: boolean;
+    migration: boolean;
     timestamps: boolean;
+    fields: {
+        'name': string,
+        'db_type': string,
+        'validations': string,
+        'primary': boolean,
+        'searchable': boolean,
+        'fillable': boolean
+    }[];
 }
 
 const INIT_STATE: IModelState = {
     name: 'Post',
     softDelete: false,
-    migrate: false,
-    timestamps: false
+    migration: false,
+    timestamps: false,
+    fields: [
+        {
+            'name': 'id',
+            'db_type': 'increment',
+            'validations': 'string',
+            'primary': true,
+            'searchable': true,
+            'fillable': true
+        }
+
+    ]
 };
 
 export function modelReducer(
@@ -21,44 +40,15 @@ export function modelReducer(
     action): IModelState {
 
     switch (action.type) {
-        case MODEL_ACTIONS.UPDATE:
-            return tassign(state, {
-                name: action.payload,
-                softDelete: state.softDelete,
-                migrate: state.migrate,
-                timestamps: state.timestamps
-            });
-        // case MODEL_ACTIONS.MODEL_NOW:
-        //     let total = action.payload.total;
-        //     return tassign(state, {
-        //         onSearch: state.onSearch,
-        //         keyword: state.keyword,
-        //         total
-        //     });
+        case MODEL_ACTIONS.ADD_FIELD:
+            state.fields.push(INIT_STATE.fields[0]);
 
-        case MODEL_ACTIONS.UPDATE_SOFT_DELETE:
-            let softdel = action.payload;
-            return tassign(state, {
-                name: state.name,
-                softDelete: softdel,
-                migrate: state.migrate,
-                timestamps: state.timestamps
-            });
-
-        case MODEL_ACTIONS.UPDATE_MIGRATE:
             return tassign(state, {
                 name: state.name,
                 softDelete: state.softDelete,
-                migrate: action.payload,
-                timestamps: state.timestamps
-            });
-
-        case MODEL_ACTIONS.UPDATE_TIMESTAMPS:
-            return tassign(state, {
-                name: state.name,
-                softDelete: state.softDelete,
-                migrate: state.migrate,
-                timestamps: action.payload
+                migration: state.migration,
+                timestamps: state.timestamps,
+                fields: state.fields
             });
 
         default:

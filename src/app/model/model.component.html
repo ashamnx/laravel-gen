@@ -1,20 +1,92 @@
 <md-card class="example-card">
     <md-card-content fxLayout="column" fxLayoutAlign="center stretch">
-        <md-input-container>
-            <input
-                    id='model-input'
+        <form connect="model">
+            <md-input-container>
+                <input
+                    name="name"
+                    ngControl ngModel
                     type="text"
                     class="search"
                     placeholder="Model Name (Eg, Post)"
                     md-input
-                    #field (keyup)="handleKeyUp(field.value)"/>
-        </md-input-container>
-        <p>You entered: {{ model$.pluck('name') | async }}<p>
-        <section class="example-section">
-            <md-checkbox class="example-margin" (ngModelChange)="optionChange($event, 'UPDATE_SOFT_DELETE')" [(ngModel)]="softdeletes">Soft Deletes</md-checkbox>
-            <md-checkbox class="example-margin" (ngModelChange)="optionChange($event, 'UPDATE_MIGRATE')" [(ngModel)]="migration">Migration</md-checkbox>
-            <md-checkbox class="example-margin" (ngModelChange)="optionChange($event, 'UPDATE_TIMESTAMPS')" [(ngModel)]="timestamps">Time Stamps</md-checkbox>
-        </section>
+                    />
+            </md-input-container>
+            <section class="example-section">
+                <h3>Options</h3>
+                <md-checkbox class="example-margin" ngControl ngModel name="softDelete">Soft Deletes</md-checkbox>
+                <md-checkbox class="example-margin" ngControl ngModel name="migration">Migration</md-checkbox>
+                <md-checkbox class="example-margin" ngControl ngModel name="timestamps">Time Stamps</md-checkbox>
+            </section>
+            <section>
+                <h3>Fields</h3>
+                <table class="material-table">
+                    <thead>
+                        <tr>
+                            <th>Field Name</th>
+                            <th>DB Type</th>
+                            <th>Validations</th>
+                            <th>Primary</th>
+                            <th>Searchable</th>
+                            <th>Fillable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <template connectArray let-index connectArrayOf="fields">
+                        <tr [ngModelGroup]="index">
+                            <td>
+                                <md-input-container>
+                                <input
+                                    name="name"
+                                    type="text"
+                                    ngControl ngModel
+                                    class="search"
+                                    placeholder="Field Name"
+                                    md-input/>
+                                </md-input-container>
+                            </td>
+                            <td>
+                                <md-input-container>
+                                <input
+                                    name="db_type"
+                                    type="text"
+                                    ngControl ngModel
+                                    class="search"
+                                    placeholder="DB Type"
+                                    md-input/>
+                                </md-input-container>
+                            </td>
+                            <td>
+                                <md-input-container>
+                                <input
+                                   name="validations"
+                                   type="text"
+                                   ngControl ngModel
+                                   class="search"
+                                   placeholder="Validation"
+                                   md-input/>
+                                </md-input-container>
+                            </td>
+
+                            <td>
+                                <md-checkbox class="example-margin" ngControl ngModel name="primary"></md-checkbox>
+                            </td>
+
+                            <td>
+                                <md-checkbox class="example-margin" ngControl ngModel name="searchable"></md-checkbox>
+                            </td>
+
+                            <td>
+                                <md-checkbox class="example-margin" ngControl ngModel name="fillable"></md-checkbox>
+                            </td>
+
+                        </tr>
+                    </template>
+                    </tbody>
+                </table>
+                <button md-raised-button (click)="addNewField()">Add Field</button>
+                <p>* Softdeletes, timestamps, id (Primary Key) are added automatically</p>
+            </section>
+        </form>
 
     </md-card-content>
 </md-card>

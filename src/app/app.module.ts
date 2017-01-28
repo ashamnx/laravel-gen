@@ -22,6 +22,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { PluralizePipe } from './pluralize.pipe';
 
+import { NgReduxForms } from 'ng2-redux-form';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -29,7 +31,8 @@ import { PluralizePipe } from './pluralize.pipe';
         CommonModule,
         NgReduxModule,
         MaterialModule.forRoot(),
-        FlexLayoutModule.forRoot()
+        FlexLayoutModule.forRoot(),
+        NgReduxForms
     ],
     declarations: [
         AppComponent,

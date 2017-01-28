@@ -1,9 +1,12 @@
-<md-card class="example-card">
-    <md-card-header>
-        <md-card-title>{{ model$.pluck('name') | async}}.php Model Code </md-card-title>
-    </md-card-header>
-    <md-card-content>
-        <pre>
+<md-tab-group dynamicHeight="true">
+    <md-tab>
+        <template md-tab-label>
+            Model (<em>{{ model$.pluck('name') | async}}.php)</em>
+        </template>
+        <md-card class="example-card">
+            <md-card-content>
+        <pre class="">
+            <code class="language-php">
 <?php
 
 namespace App\Models;
@@ -27,7 +30,8 @@ class {{ model$.pluck('name') | async }} extends Model
 
 
     public $fillable = [
-
+        <template ngFor let-field [ngForOf]="(model$.pluck('fields').filter(((val) => val.fillable == true)) | async)"> '{{field.name}}' : '{{field.validations}}',
+        </template>
     ];
 
     /**
@@ -45,25 +49,29 @@ class {{ model$.pluck('name') | async }} extends Model
      * @var array
      */
     public static $rules = [
-
+        <template ngFor let-field [ngForOf]="(model$.pluck('fields') | async)"> '{{field.name}}' : '{{field.validations}}',
+        </template>
     ];
 
 
 {{'}'}}
+</code>
         </pre>
-    </md-card-content>
-    <md-card-actions>
-        <button md-button color="primary">DOWNLOAD</button>
-        <button md-button color="accent">COPY</button>
-    </md-card-actions>
-</md-card>
-<br>
-<md-card class="example-card">
-    <md-card-header>
-        <md-card-title>create_{{ model$.pluck('name') | async | lowercase | pluralize }}_table.php Migration Code </md-card-title>
-    </md-card-header>
-    <md-card-content>
-<pre>
+            </md-card-content>
+            <md-card-actions>
+                <button md-button color="primary">DOWNLOAD</button>
+                <button md-button color="accent">COPY</button>
+            </md-card-actions>
+        </md-card>
+    </md-tab>
+    <md-tab *ngIf="(model$.pluck('migration') | async)">
+        <template md-tab-label>
+            Migration (<em>create_{{ model$.pluck('name') | async | lowercase | pluralize }}_table.php)</em>
+        </template>
+        <md-card class="example-card">
+            <md-card-content>
+<pre class="">
+    <code class="language-php">
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -100,10 +108,13 @@ class Create{{ model$.pluck('name') | async | pluralize }}Table extends Migratio
     {{'}'}}
 
 {{'}'}}
+        </code>
 </pre>
-    </md-card-content>
-    <md-card-actions>
-        <button md-button color="primary">DOWNLOAD</button>
-        <button md-button color="accent">COPY</button>
-    </md-card-actions>
-</md-card>
+            </md-card-content>
+            <md-card-actions>
+                <button md-button color="primary">DOWNLOAD</button>
+                <button md-button color="accent">COPY</button>
+            </md-card-actions>
+        </md-card>
+    </md-tab>
+</md-tab-group>
