@@ -1,0 +1,8 @@
+<md-toolbar color="primary">
+  <span>Models</span>
+</md-toolbar>
+<div style="min-width: 275px;">
+  <md-list>
+    <md-list-item *ngFor="let menuitem of (models$ | async); let i = index;" (click)="selectModel(menuitem.id)"> {{menuitem.name}} </md-list-item>
+  </md-list>
+</div>

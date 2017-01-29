@@ -8,6 +8,19 @@ body{
     background: #FAFAFA;
 }
 
+html, body {
+    height: 100%;
+}
+
+.md-sidenav-content{
+    display: flex;
+    flex-direction: column;
+}
+
+.example-scrolling-content{
+    height:100%;
+}
+
 .md-padding{
     padding:1em;
 }
@@ -42,4 +55,12 @@ h3.filename {
     font-weight: 100;
     color: #969696;
     font-family: "Roboto";
+}
+
+.example-sidenav-fab-container{
+    height: 100%;
+}
+
+.overflow-auto{
+    overflow: auto;
 }

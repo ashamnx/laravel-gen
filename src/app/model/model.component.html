@@ -1,6 +1,8 @@
 <md-card class="example-card">
     <md-card-content fxLayout="column" fxLayoutAlign="center stretch">
-        <form connect="model">
+        <button md-raised-button (click)="addNewModel()">New Model</button>
+        {{modelIndex$ | async}}
+        <form [connect]="['models', (modelIndex$ | async)]">
             <md-input-container>
                 <input
                     name="name"
