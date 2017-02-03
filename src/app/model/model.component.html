@@ -1,14 +1,16 @@
 <md-card class="example-card">
     <md-card-content fxLayout="column" fxLayoutAlign="center stretch">
-        <form connect="model">
-            <md-input-container>
+        <button md-raised-button (click)="addNewModel()">New Model</button>
+        {{modelIndex$ | async}}
+        <form [connect]="['models', (modelIndex$ | async)]">
+            <md-input-container floatPlaceholder="Model Name (Eg, Post)">
                 <input
                     name="name"
                     ngControl ngModel
                     type="text"
                     class="search"
-                    placeholder="Model Name (Eg, Post)"
-                    md-input
+                    placeholder="Nice"
+                    mdInput
                     />
             </md-input-container>
             <section class="example-section">
@@ -41,7 +43,7 @@
                                     ngControl ngModel
                                     class="search"
                                     placeholder=""
-                                    md-input/>
+                                    mdInput/>
                                 </md-input-container>
                             </td>
                             <td>
@@ -52,7 +54,7 @@
                                     ngControl ngModel
                                     class="search"
                                     placeholder=""
-                                    md-input/>
+                                    mdInput/>
                                 </md-input-container>
                             </td>
                             <td>
@@ -63,7 +65,7 @@
                                    ngControl ngModel
                                    class="search"
                                    placeholder=""
-                                   md-input/>
+                                   mdInput/>
                                 </md-input-container>
                             </td>
 

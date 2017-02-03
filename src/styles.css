@@ -10,6 +10,19 @@ body{
     text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
 }
 
+html, body {
+    height: 100%;
+}
+
+.md-sidenav-content{
+    display: flex;
+    flex-direction: column;
+}
+
+.example-scrolling-content{
+    height:100%;
+}
+
 .md-padding{
     padding:1em;
 }
@@ -48,4 +61,12 @@ h3.filename {
 
 .md-checkbox-frame {
     border: 0px solid;
+}
+
+.example-sidenav-fab-container{
+    height: 100%;
+}
+
+.overflow-auto{
+    overflow: auto;
 }
