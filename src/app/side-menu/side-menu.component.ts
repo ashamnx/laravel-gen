@@ -10,15 +10,18 @@ import {IAppState} from '../store';
     styleUrls: ['./side-menu.component.css']
 })
 export class SideMenuComponent implements OnInit {
-    @select() models$: Observable<string>;
-    @select('selectedModel') selectedModel$: Observable<string>;
+    @select(state => state.models) models$: Observable<string>;
+    // @select('selectedModel') selectedModel$: Observable<string>;
 
+    modelKeys: string[];
     constructor(public actions: ModelActions,
                 private ngRedux: NgRedux<IAppState>) {
     }
 
     ngOnInit () {
-
+        this.models$.subscribe(val => {
+            this.modelKeys = Object.keys(val);
+        });
     }
 
     selectModel(id: number) {

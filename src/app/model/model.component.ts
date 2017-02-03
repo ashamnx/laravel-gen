@@ -14,18 +14,22 @@ import {IAppState} from '../store';
     styleUrls: ['./model.component.css']
 })
 export class ModelComponent {
-
-    @select( state => state.models.find((val) => {return val.id === state.selectedModel})) model$: Observable<string>;
-    @select( state => state.models.findIndex((val) => {return val.id === state.selectedModel})) modelIndex$: Observable<string>;
+    // @select(state => state.models[Object.keys(state.models)[0]]) models$: Observable<string>;
+    @select(state => state.models[state.selectedModel || state.models[Object.keys(state.models)[0]].id]) model$: Observable<string>;
     @select('selectedModel') selectedModel$: Observable<string>;
     // @select(state => state.model.fields.filter(n => n.fillable == true)) fields$: Observable<any>;
 
+    currentModelIndex;
+    selectedModel;
+
     constructor(public actions: ModelActions,
                 private ngRedux: NgRedux<IAppState>) {
+        this.currentModelIndex = 0;
     }
 
-    addNewField(id: number) {
-        this.actions.addField(id);
+
+    addNewField(id) {
+        this.actions.addField(Number(id));
     }
 
     addNewModel() {
@@ -33,8 +37,8 @@ export class ModelComponent {
     }
 
     ngOnInit () {
-        this.model$.subscribe(item => {
-            // console.log('it', item);
+        this.selectedModel$.subscribe(val => {
+            this.selectedModel = val;
         });
     }
 
