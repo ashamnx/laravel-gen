@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 export const MODEL_ACTIONS = {
     ADD_MODEL: 'ADD_MODEL',
     ADD_FIELD: 'ADD_FIELD',
+    ADD_RELATION: 'ADD_RELATION',
     SELECT_MODEL: 'SELECT_MODEL',
 };
 
@@ -14,6 +15,10 @@ export class ModelActions {
 
     addField(id: number) {
         this.ngRedux.dispatch(this._addField(id));
+    }
+
+    addRelation(id: number) {
+        this.ngRedux.dispatch(this._addRelation(id));
     }
 
     addModel() {
@@ -27,6 +32,15 @@ export class ModelActions {
     private _addField(id: number) {
         return {
             type: MODEL_ACTIONS.ADD_FIELD,
+            payload: {
+                id: id
+            }
+        };
+    }
+
+    private _addRelation(id: number) {
+        return {
+            type: MODEL_ACTIONS.ADD_RELATION,
             payload: {
                 id: id
             }

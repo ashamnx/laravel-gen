@@ -1,7 +1,7 @@
 <md-tab-group dynamicHeight="true">
     <md-tab>
         <template md-tab-label>
-            Model (<em>{{ model$.pluck('name') | async}}.php)</em>
+            Model (<em>{{ model.name }}.php)</em>
         </template>
         <md-card class="example-card">
             <md-card-content>
@@ -12,25 +12,25 @@
 namespace App\Models;
 
 use Eloquent as Model;
-{{ (model$.pluck('softDelete') | async) ? 'use Illuminate\Database\Eloquent\SoftDeletes;' : ''}}
+<template [ngIf]="model.softDelete">use Illuminate\Database\Eloquent\SoftDeletes;</template>
 
 /**
- * Class {{ model$.pluck('name') | async }}
+ * Class {{ modelname }}
  * @package App\Models
  * @version January 27, 2017, 6:26 am UTC
  */
-class {{ model$.pluck('name') | async }} extends Model
+class {{ model.name }} extends Model
 {{'{'}}
-    {{ (model$.pluck('softDelete') | async) ? 'use SoftDeletes;' : ''}}
+    <template [ngIf]="model.softDelete">use SoftDeletes;</template>
 
-    public $table = '{{ model$.pluck('name') | async | lowercase | pluralize}}';
+    public $table = '{{ model.name | lowercase | pluralize}}';
 
-
-    protected $dates = [{{ (model$.pluck('softDelete') | async) ? '\'deleted_at\'' : ''}}];
-
+    protected $dates = [
+        <template [ngIf]="model.softDelete">'deleted_at',</template>
+    ]
 
     public $fillable = [
-        <template ngFor let-field [ngForOf]="(fields$) | async"> '{{field.name}}',
+        <template ngFor let-field [ngForOf]="(model.fields | filter: 'fillable': true)"> '{{field.name}}',
         </template>
     ];
 
@@ -49,10 +49,9 @@ class {{ model$.pluck('name') | async }} extends Model
      * @var array
      */
     public static $rules = [
-        <template ngFor let-field [ngForOf]="(model$.pluck('fields') | async)"> '{{field.name}}' : '{{field.validations}}',
+        <template ngFor let-field [ngForOf]="(model.fields)"> '{{field?.name}}' => '{{field?.validations}}',
         </template>
     ];
-
 
 {{'}'}}
 </code>
@@ -64,9 +63,9 @@ class {{ model$.pluck('name') | async }} extends Model
             </md-card-actions>
         </md-card>
     </md-tab>
-    <md-tab *ngIf="(model$.pluck('migration') | async)">
+    <md-tab *ngIf="(model.migration)">
         <template md-tab-label>
-            Migration (<em>create_{{ model$.pluck('name') | async | lowercase | pluralize }}_table.php)</em>
+            Migration (<em>{{ model.id }}_create_{{ model.name | lowercase | pluralize }}_table.php)</em>
         </template>
         <md-card class="example-card">
             <md-card-content>
@@ -77,7 +76,7 @@ class {{ model$.pluck('name') | async }} extends Model
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class Create{{ model$.pluck('name') | async | pluralize }}Table extends Migration
+class Create{{ model.name | pluralize }}Table extends Migration
 {{'{'}}
 
     /**
@@ -87,17 +86,14 @@ class Create{{ model$.pluck('name') | async | pluralize }}Table extends Migratio
      */
     public function up()
     {{'{'}}
-        Schema::create('{{ model$.pluck('name') | async | lowercase | pluralize }}', function (Blueprint $table) {{'{'}}
-            <template ngFor let-dbfield [ngForOf]="(dbfields$ | async)"> {{dbfield}}
+        Schema::create('{{ model.name | lowercase | pluralize }}', function (Blueprint $table) {{'{'}}
+            $table->increments('id');
+            <template ngFor let-field [ngForOf]="(model.fields)">$table->{{field.db_type}}('{{field.name}}');
             </template>
-            <template>
-                {{ dbfield | async }}
-            </template>
-
-            {{ (model$.pluck('timestamps') | async) ? '$table->timestamps();' : ''}}
-            {{ (model$.pluck('softDelete') | async) ? '$table->softDeletes();' : ''}}
-
-    {{'}'}});
+            <template [ngIf]="model.polymorphic">$table->morphs('{{ model.name | lowercase }}able');</template>
+            <template [ngIf]="model.timestamps">$table->timestamps();</template>
+            <template [ngIf]="model.softDelete">$table->softDeletes();</template>
+        {{'}'}});
     {{'}'}}
 
     /**
@@ -107,7 +103,7 @@ class Create{{ model$.pluck('name') | async | pluralize }}Table extends Migratio
      */
     public function down()
     {{'{'}}
-        Schema::drop('{{ model$.pluck('name') | async | lowercase | pluralize }}');
+        Schema::drop('{{ model.name | lowercase | pluralize }}');
     {{'}'}}
 
 {{'}'}}

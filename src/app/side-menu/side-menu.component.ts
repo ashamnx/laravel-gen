@@ -10,7 +10,7 @@ import {IAppState} from '../store';
     styleUrls: ['./side-menu.component.css']
 })
 export class SideMenuComponent implements OnInit {
-    @select(state => state.models) models$: Observable<string>;
+    @select() models$: Observable<string>;
     // @select('selectedModel') selectedModel$: Observable<string>;
 
     modelKeys: string[];
@@ -27,6 +27,10 @@ export class SideMenuComponent implements OnInit {
     selectModel(id: number) {
         console.log('id', id);
         this.actions.selectModel(id);
+    }
+
+    addNewModel() {
+        this.actions.addModel();
     }
 
 }

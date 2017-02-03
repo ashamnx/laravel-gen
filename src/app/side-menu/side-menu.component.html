@@ -4,6 +4,6 @@
 <div style="min-width: 275px;">
   <md-list>
     <md-list-item *ngFor="let modelKey of (modelKeys); let i = index;" (click)="selectModel(modelKey)"> {{(models$ | async)[modelKey].name}} </md-list-item>
+    <button md-button (click)="addNewModel()" color="primary"> New Model </button>
   </md-list>
-  <!--(click)="selectModel((models$ | async)[modelKey].menuitem.id)"-->
 </div>
