@@ -116,4 +116,150 @@ class Create{{ model.name | pluralize }}Table extends Migration
             </md-card-actions>
         </md-card>
     </md-tab>
+    <md-tab>
+        <template md-tab-label>
+            Controller (<em>{{ model.name }}Controller.php)</em>
+        </template>
+        <md-card class="example-card">
+            <md-card-content>
+<pre class="">
+    <code class="language-php">
+<?php
+
+namespace App\Http\Controllers\API;
+
+use App\Http\Requests\API\Create{{ model.name }}APIRequest;
+use App\Http\Requests\API\Update{{ model.name }}APIRequest;
+use App\Models\{{ model.name }};
+use App\Repositories\{{ model.name }}Repository;
+use Illuminate\Http\Request;
+use App\Http\Controllers\AppBaseController;
+use InfyOm\Generator\Criteria\LimitOffsetCriteria;
+use Prettus\Repository\Criteria\RequestCriteria;
+use Response;
+
+/**
+ * Class {{ model.name }}Controller
+ * @package App\Http\Controllers\API
+ */
+
+class {{ model.name }}APIController extends AppBaseController
+{{'{'}}
+    /** @var  {{ model.name }}Repository */
+    private ${{ model.name | lowercase}}Repository;
+
+    public function __construct({{ model.name }}Repository ${{ model.name | lowercase}}Repo)
+    {{'{'}}
+        $this->{{ model.name | lowercase}}Repository = ${{ model.name | lowercase}}Repo;
+    {{'}'}}
+
+    /**
+     * Display a listing of the {{ model.name }}.
+     * GET|HEAD /{{ model.name | lowercase | pluralize}}
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request)
+    {{'{'}}
+        $this->{{ model.name | lowercase}}Repository->pushCriteria(new RequestCriteria($request));
+        $this->{{ model.name | lowercase}}Repository->pushCriteria(new LimitOffsetCriteria($request));
+        ${{ model.name | lowercase | pluralize}} = $this->{{ model.name | lowercase}}Repository->all();
+
+        return $this->sendResponse(${{ model.name | lowercase | pluralize}}->toArray(), '{{ model.name | pluralize }} retrieved successfully');
+    {{'}'}}
+
+    /**
+     * Store a newly created {{ model.name }} in storage.
+     * POST /{{ model.name | lowercase | pluralize}}
+     *
+     * @param Create{{ model.name }}APIRequest $request
+     *
+     * @return Response
+     */
+    public function store(Create{{ model.name }}APIRequest $request)
+    {{'{'}}
+        $input = $request->all();
+
+        ${{ model.name | lowercase | pluralize}} = $this->{{ model.name | lowercase}}Repository->create($input);
+
+        return $this->sendResponse(${{ model.name | lowercase | pluralize}}->toArray(), '{{ model.name }} saved successfully');
+    {{'}'}}
+
+    /**
+     * Display the specified {{ model.name }}.
+     * GET|HEAD /{{ model.name | lowercase | pluralize}}/{{'{'}}id{{'}'}}
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function show($id)
+    {{'{'}}
+        /** @var {{ model.name }} ${{ model.name | lowercase}} */
+        ${{ model.name | lowercase}} = $this->{{ model.name | lowercase}}Repository->findWithoutFail($id);
+
+        if (empty(${{ model.name | lowercase}})) {{'{'}}
+            return $this->sendError('{{ model.name }} not found');
+        {{'}'}}
+
+        return $this->sendResponse(${{ model.name | lowercase}}->toArray(), '{{ model.name }} retrieved successfully');
+    {{'}'}}
+
+    /**
+     * Update the specified {{ model.name }} in storage.
+     * PUT/PATCH /{{ model.name | lowercase | pluralize}}/{{'{'}}id{{'}'}}
+     *
+     * @param  int $id
+     * @param Update{{ model.name }}APIRequest $request
+     *
+     * @return Response
+     */
+    public function update($id, Update{{ model.name }}APIRequest $request)
+    {{'{'}}
+        $input = $request->all();
+
+        /** @var {{ model.name }} ${{ model.name | lowercase}} */
+        ${{ model.name | lowercase}} = $this->{{ model.name | lowercase}}Repository->findWithoutFail($id);
+
+        if (empty(${{ model.name | lowercase}})) {{'{'}}
+            return $this->sendError('{{ model.name }} not found');
+        {{'}'}}
+
+        ${{ model.name | lowercase}} = $this->{{ model.name | lowercase}}Repository->update($input, $id);
+
+        return $this->sendResponse(${{ model.name | lowercase}}->toArray(), '{{ model.name }} updated successfully');
+    {{'}'}}
+
+    /**
+     * Remove the specified {{ model.name }} from storage.
+     * DELETE /{{ model.name | lowercase | pluralize}}/{{'{'}}id{{'}'}}
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function destroy($id)
+    {{'{'}}
+        /** @var {{ model.name }} ${{ model.name | lowercase}} */
+        ${{ model.name | lowercase}} = $this->{{ model.name | lowercase}}Repository->findWithoutFail($id);
+
+        if (empty(${{ model.name | lowercase}})) {{'{'}}
+            return $this->sendError('{{ model.name }} not found');
+        {{'}'}}
+
+        ${{ model.name | lowercase}}->delete();
+
+        return $this->sendResponse($id, '{{ model.name }} deleted successfully');
+    {{'}'}}
+{{'}'}}
+        </code>
+</pre>
+            </md-card-content>
+            <md-card-actions>
+                <button md-button color="primary">DOWNLOAD</button>
+                <button md-button color="accent">COPY</button>
+            </md-card-actions>
+        </md-card>
+    </md-tab>
 </md-tab-group>
