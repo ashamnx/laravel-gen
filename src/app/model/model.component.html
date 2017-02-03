@@ -1,8 +1,8 @@
 <md-card class="example-card">
     <md-card-content fxLayout="column" fxLayoutAlign="center stretch">
         <button md-raised-button (click)="addNewModel()">New Model</button>
-        {{modelIndex$ | async}}
-        <form [connect]="['models', (modelIndex$ | async)]">
+        {{selectedModel$ | async}}
+        <form [connect]="['models', (selectedModel)]">
             <md-input-container>
                 <input
                     name="name"
@@ -33,8 +33,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <template connectArray let-index connectArrayOf="fields">
-                        <tr [ngModelGroup]="index">
+                    <template connectArray let-field connectArrayOf="fields">
+                        <tr [ngModelGroup]="field">
                             <td>
                                 <md-input-container>
                                 <input
@@ -85,7 +85,7 @@
                     </template>
                     </tbody>
                 </table>
-                <button md-raised-button (click)="addNewField()">Add Field</button>
+                <button md-raised-button (click)="addNewField(selectedModel)">Add Field</button>
                 <p>* Softdeletes, timestamps, id (Primary Key) are added automatically</p>
             </section>
         </form>

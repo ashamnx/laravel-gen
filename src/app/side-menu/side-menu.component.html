@@ -3,6 +3,7 @@
 </md-toolbar>
 <div style="min-width: 275px;">
   <md-list>
-    <md-list-item *ngFor="let menuitem of (models$ | async); let i = index;" (click)="selectModel(menuitem.id)"> {{menuitem.name}} </md-list-item>
+    <md-list-item *ngFor="let modelKey of (modelKeys); let i = index;" (click)="selectModel(modelKey)"> {{(models$ | async)[modelKey].name}} </md-list-item>
   </md-list>
+  <!--(click)="selectModel((models$ | async)[modelKey].menuitem.id)"-->
 </div>

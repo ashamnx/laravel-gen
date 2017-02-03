@@ -13,8 +13,8 @@ selector: 'model-code',
 templateUrl: './model-code.component.html',
 })
 export class ModelCodeComponent {
-    @select( state => state.models.find((val) => {return val.id === state.selectedModel})) model$: Observable<string>;
-    // @select(state => state.model.fields.filter(n => n.fillable == true)) fields$: Observable<any>;
+    @select(state => state.models[state.selectedModel]) model$: Observable<string>;
+    @select('selectedModel') selectedModel$: Observable<string>;
     // @select(state => state.model.fields.map(n => n.db = '$table->'+n.db_type+'(\''+n.name+'\');')) dbfields$: Observable<any>;
 
     constructor(
