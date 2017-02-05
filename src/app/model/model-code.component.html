@@ -69,7 +69,7 @@ class {{ model.name }} extends Model
         </template>
         <md-card class="example-card">
             <md-card-content>
-<pre class="" id="{{ model.id }}_create_{{ model.name | lowercase | pluralize }}_table.php">
+<pre class="" id="{{ model.id }}_create_{{ model.name }}_table.php">
     <code class="language-php">
 <?php
 
@@ -111,7 +111,7 @@ class Create{{ model.name | pluralize }}Table extends Migration
 </pre>
             </md-card-content>
             <md-card-actions>
-                <button md-button color="primary" (click)="download(( model.id +'_create_'+(model.name | lowercase | pluralize )+'_table.php'))">DOWNLOAD</button>
+                <button md-button color="primary" (click)="download(( model.id +'_create_'+( model.name )+'_table.php'))">DOWNLOAD</button>
                 <button md-button color="accent">COPY</button>
             </md-card-actions>
         </md-card>
