@@ -23,6 +23,7 @@ import { PluralizePipe } from './pluralize.pipe';
 import { NgReduxForms } from 'ng2-redux-form';
 import { SideMenuComponent } from './side-menu/side-menu.component';
 import {FilterPipe} from "./common/filter.pipe";
+import { CompiledDirective } from "./compiled.directive"
 
 import { PolymerElement } from '@vaadin/angular2-polymer';
 
@@ -50,6 +51,7 @@ import { PolymerElement } from '@vaadin/angular2-polymer';
         FilterPipe,
 
         SideMenuComponent,
+        CompiledDirective,
     ],
     bootstrap: [ AppComponent ],
     providers: [

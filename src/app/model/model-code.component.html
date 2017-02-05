@@ -5,7 +5,7 @@
         </template>
         <md-card class="example-card">
             <md-card-content>
-                <pre class="">
+                <pre class="" id="{{ model.name }}.php">
                     <code class="language-php">
 <?php
 
@@ -58,7 +58,7 @@ class {{ model.name }} extends Model
         </pre>
             </md-card-content>
             <md-card-actions>
-                <button md-button color="primary">DOWNLOAD</button>
+                <button md-button color="primary" (click)="download((model.name+'.php'))">DOWNLOAD</button>
                 <button md-button color="accent">COPY</button>
             </md-card-actions>
         </md-card>
@@ -69,7 +69,7 @@ class {{ model.name }} extends Model
         </template>
         <md-card class="example-card">
             <md-card-content>
-<pre class="">
+<pre class="" id="{{ model.id }}_create_{{ model.name | lowercase | pluralize }}_table.php">
     <code class="language-php">
 <?php
 
@@ -111,7 +111,7 @@ class Create{{ model.name | pluralize }}Table extends Migration
 </pre>
             </md-card-content>
             <md-card-actions>
-                <button md-button color="primary">DOWNLOAD</button>
+                <button md-button color="primary" (click)="download(( model.id +'_create_'+(model.name | lowercase | pluralize )+'_table.php'))">DOWNLOAD</button>
                 <button md-button color="accent">COPY</button>
             </md-card-actions>
         </md-card>
@@ -122,7 +122,7 @@ class Create{{ model.name | pluralize }}Table extends Migration
         </template>
         <md-card class="example-card">
             <md-card-content>
-<pre class="">
+<pre class="" id="{{model.name}}Controller.php">
     <code class="language-php">
 <?php
 
@@ -257,7 +257,141 @@ class {{ model.name }}APIController extends AppBaseController
 </pre>
             </md-card-content>
             <md-card-actions>
-                <button md-button color="primary">DOWNLOAD</button>
+                <button md-button color="primary"  (click)="download((model.name +'Controller.php'))">DOWNLOAD</button>
+                <button md-button color="accent">COPY</button>
+            </md-card-actions>
+        </md-card>
+    </md-tab>
+    <md-tab>
+        <template md-tab-label>
+            Create Request (<em>Create{{ model.name }}APIRequest.php)</em>
+        </template>
+        <md-card class="example-card">
+            <md-card-content>
+<pre class="" id="Create{{ model.name }}APIRequest.php">
+    <code class="language-php">
+<?php
+
+namespace App\Http\Requests\API;
+
+use App\Models\{{ model.name }};
+use InfyOm\Generator\Request\APIRequest;
+
+class Create{{ model.name }}APIRequest extends APIRequest
+{{'{'}}
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {{'{'}}
+        return true;
+    {{'}'}}
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {{'{'}}
+        return {{ model.name }}::$rules;
+    {{'}'}}
+{{'}'}}
+        </code>
+</pre>
+            </md-card-content>
+            <md-card-actions>
+                <button md-button color="primary" (click)="download(('Create'+ model.name +'APIRequest.php'))">DOWNLOAD</button>
+                <button md-button color="accent">COPY</button>
+            </md-card-actions>
+        </md-card>
+    </md-tab>
+    <md-tab>
+        <template md-tab-label>
+            Update Request (<em>Update{{ model.name }}APIRequest.php)</em>
+        </template>
+        <md-card class="example-card">
+            <md-card-content>
+<pre class="" id="Update{{ model.name }}APIRequest.php">
+    <code class="language-php">
+<?php
+
+namespace App\Http\Requests\API;
+
+use App\Models\{{ model.name }};
+use InfyOm\Generator\Request\APIRequest;
+
+class Update{{ model.name }}APIRequest extends APIRequest
+{{'{'}}
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {{'{'}}
+        return true;
+    {{'}'}}
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {{'{'}}
+        return {{ model.name }}::$rules;
+    {{'}'}}
+{{'}'}}
+        </code>
+</pre>
+            </md-card-content>
+            <md-card-actions>
+                <button md-button color="primary" (click)="download(('Update'+ model.name +'APIRequest.php'))">DOWNLOAD</button>
+                <button md-button color="accent">COPY</button>
+            </md-card-actions>
+        </md-card>
+    </md-tab>
+    <md-tab>
+        <template md-tab-label>
+            Repository (<em>Create{{ model.name }}Repository.php)</em>
+        </template>
+        <md-card class="example-card" appCompiled>
+            <md-card-content>
+<pre class="" id="Create{{ model.name }}Repository.php">
+    <code class="language-php">
+{{'<'}}?php
+
+namespace App\Repositories;
+
+use App\Models\{{ model.name }};
+use InfyOm\Generator\Common\BaseRepository;
+
+class {{ model.name }}Repository extends BaseRepository
+{{'{'}}
+    /**
+     * @var array
+     */
+    protected $fieldSearchable = [
+
+    ];
+
+    /**
+     * Configure the Model
+     **/
+    public function model()
+    {{'{'}}
+        return {{ model.name }}::class;
+    {{'}'}}
+{{'}'}}
+
+        </code>
+</pre>
+            </md-card-content>
+            <md-card-actions>
+                <button md-button color="primary" (click)="download(('Create'+model.name+'Repository.php'))" >DOWNLOAD</button>
                 <button md-button color="accent">COPY</button>
             </md-card-actions>
         </md-card>
