@@ -11,7 +11,7 @@ import {IAppState} from '../store';
 @Component({
     selector: 'model',
     templateUrl: './model.component.html',
-    styleUrls: ['./model.component.css']
+    styleUrls: ['./model.component.css'],
 })
 export class ModelComponent implements OnInit{
     @select() models$: Observable<string>;
@@ -31,6 +31,22 @@ export class ModelComponent implements OnInit{
 
     addNewRelation(id) {
         this.actions.addRelation(Number(id));
+    }
+
+    downloadAll () {
+        // let el = document.getElementById(filename).getElementsByClassName('language-php')[0].innerHTML;
+        // const pom = document.createElement('a');
+        // pom.setAttribute('href', 'data:application/php;charset=utf-8,' + encodeURI(el.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/<!--([^;]*)-->/g, '') ));
+        // pom.setAttribute('download', filename);
+        //
+        // if (document.createEvent) {
+        //     let event = document.createEvent('MouseEvents');
+        //     event.initEvent('click', true, true);
+        //     pom.dispatchEvent(event);
+        // }
+        // else {
+        //     pom.click();
+        // }
     }
 
     ngOnInit () {

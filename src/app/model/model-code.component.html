@@ -1,4 +1,5 @@
 <md-tab-group dynamicHeight="true">
+
     <md-tab>
         <template md-tab-label>
             Model (<em>{{ model.name }}.php)</em>
@@ -7,55 +8,9 @@
             <md-card-content>
                 <pre class="" id="{{ model.name }}.php">
                     <code class="language-php">
-<?php
-
-namespace App\Models;
-
-use Eloquent as Model;
-<template [ngIf]="model.softDelete">use Illuminate\Database\Eloquent\SoftDeletes;</template>
-
-/**
- * Class {{ modelname }}
- * @package App\Models
- * @version January 27, 2017, 6:26 am UTC
- */
-class {{ model.name }} extends Model
-{{'{'}}
-    <template [ngIf]="model.softDelete">use SoftDeletes;</template>
-
-    public $table = '{{ model.name | lowercase | pluralize}}';
-
-    protected $dates = [
-        <template [ngIf]="model.softDelete">'deleted_at',</template>
-    ]
-
-    public $fillable = [
-        <template ngFor let-field [ngForOf]="(model.fields | filter: 'fillable': true)"> '{{field.name}}',
-        </template>
-    ];
-
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-
-    ];
-
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        <template ngFor let-field [ngForOf]="(model.fields)"> '{{field?.name}}' => '{{field?.validations}}',
-        </template>
-    ];
-
-{{'}'}}
-</code>
-        </pre>
+{{ model | compile:'model' }}
+                    </code>
+                </pre>
             </md-card-content>
             <md-card-actions>
                 <button md-button color="primary" (click)="download((model.name+'.php'))">DOWNLOAD</button>
@@ -69,46 +24,11 @@ class {{ model.name }} extends Model
         </template>
         <md-card class="example-card">
             <md-card-content>
-<pre class="" id="{{ model.id }}_create_{{ model.name }}_table.php">
-    <code class="language-php">
-<?php
-
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-
-class Create{{ model.name | pluralize }}Table extends Migration
-{{'{'}}
-
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {{'{'}}
-        Schema::create('{{ model.name | lowercase | pluralize }}', function (Blueprint $table) {{'{'}}
-            $table->increments('id');
-            <template ngFor let-field [ngForOf]="(model.fields)">$table->{{field.db_type}}('{{field.name}}');
-            </template>
-            <template [ngIf]="model.polymorphic">$table->morphs('{{ model.name | lowercase }}able');</template>
-            <template [ngIf]="model.timestamps">$table->timestamps();</template>
-            <template [ngIf]="model.softDelete">$table->softDeletes();</template>
-        {{'}'}});
-    {{'}'}}
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {{'{'}}
-        Schema::drop('{{ model.name | lowercase | pluralize }}');
-    {{'}'}}
-
-{{'}'}}
-        </code>
-</pre>
+                <pre class="" id="{{ model.id }}_create_{{ model.name }}_table.php">
+                    <code class="language-php">
+{{ model | compile:'migration'}}
+                    </code>
+                </pre>
             </md-card-content>
             <md-card-actions>
                 <button md-button color="primary" (click)="download(( model.id +'_create_'+( model.name )+'_table.php'))">DOWNLOAD</button>
@@ -122,139 +42,11 @@ class Create{{ model.name | pluralize }}Table extends Migration
         </template>
         <md-card class="example-card">
             <md-card-content>
-<pre class="" id="{{model.name}}Controller.php">
-    <code class="language-php">
-<?php
-
-namespace App\Http\Controllers\API;
-
-use App\Http\Requests\API\Create{{ model.name }}APIRequest;
-use App\Http\Requests\API\Update{{ model.name }}APIRequest;
-use App\Models\{{ model.name }};
-use App\Repositories\{{ model.name }}Repository;
-use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
-use InfyOm\Generator\Criteria\LimitOffsetCriteria;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
-
-/**
- * Class {{ model.name }}Controller
- * @package App\Http\Controllers\API
- */
-
-class {{ model.name }}APIController extends AppBaseController
-{{'{'}}
-    /** @var  {{ model.name }}Repository */
-    private ${{ model.name | lowercase}}Repository;
-
-    public function __construct({{ model.name }}Repository ${{ model.name | lowercase}}Repo)
-    {{'{'}}
-        $this->{{ model.name | lowercase}}Repository = ${{ model.name | lowercase}}Repo;
-    {{'}'}}
-
-    /**
-     * Display a listing of the {{ model.name }}.
-     * GET|HEAD /{{ model.name | lowercase | pluralize}}
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function index(Request $request)
-    {{'{'}}
-        $this->{{ model.name | lowercase}}Repository->pushCriteria(new RequestCriteria($request));
-        $this->{{ model.name | lowercase}}Repository->pushCriteria(new LimitOffsetCriteria($request));
-        ${{ model.name | lowercase | pluralize}} = $this->{{ model.name | lowercase}}Repository->all();
-
-        return $this->sendResponse(${{ model.name | lowercase | pluralize}}->toArray(), '{{ model.name | pluralize }} retrieved successfully');
-    {{'}'}}
-
-    /**
-     * Store a newly created {{ model.name }} in storage.
-     * POST /{{ model.name | lowercase | pluralize}}
-     *
-     * @param Create{{ model.name }}APIRequest $request
-     *
-     * @return Response
-     */
-    public function store(Create{{ model.name }}APIRequest $request)
-    {{'{'}}
-        $input = $request->all();
-
-        ${{ model.name | lowercase | pluralize}} = $this->{{ model.name | lowercase}}Repository->create($input);
-
-        return $this->sendResponse(${{ model.name | lowercase | pluralize}}->toArray(), '{{ model.name }} saved successfully');
-    {{'}'}}
-
-    /**
-     * Display the specified {{ model.name }}.
-     * GET|HEAD /{{ model.name | lowercase | pluralize}}/{{'{'}}id{{'}'}}
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function show($id)
-    {{'{'}}
-        /** @var {{ model.name }} ${{ model.name | lowercase}} */
-        ${{ model.name | lowercase}} = $this->{{ model.name | lowercase}}Repository->findWithoutFail($id);
-
-        if (empty(${{ model.name | lowercase}})) {{'{'}}
-            return $this->sendError('{{ model.name }} not found');
-        {{'}'}}
-
-        return $this->sendResponse(${{ model.name | lowercase}}->toArray(), '{{ model.name }} retrieved successfully');
-    {{'}'}}
-
-    /**
-     * Update the specified {{ model.name }} in storage.
-     * PUT/PATCH /{{ model.name | lowercase | pluralize}}/{{'{'}}id{{'}'}}
-     *
-     * @param  int $id
-     * @param Update{{ model.name }}APIRequest $request
-     *
-     * @return Response
-     */
-    public function update($id, Update{{ model.name }}APIRequest $request)
-    {{'{'}}
-        $input = $request->all();
-
-        /** @var {{ model.name }} ${{ model.name | lowercase}} */
-        ${{ model.name | lowercase}} = $this->{{ model.name | lowercase}}Repository->findWithoutFail($id);
-
-        if (empty(${{ model.name | lowercase}})) {{'{'}}
-            return $this->sendError('{{ model.name }} not found');
-        {{'}'}}
-
-        ${{ model.name | lowercase}} = $this->{{ model.name | lowercase}}Repository->update($input, $id);
-
-        return $this->sendResponse(${{ model.name | lowercase}}->toArray(), '{{ model.name }} updated successfully');
-    {{'}'}}
-
-    /**
-     * Remove the specified {{ model.name }} from storage.
-     * DELETE /{{ model.name | lowercase | pluralize}}/{{'{'}}id{{'}'}}
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function destroy($id)
-    {{'{'}}
-        /** @var {{ model.name }} ${{ model.name | lowercase}} */
-        ${{ model.name | lowercase}} = $this->{{ model.name | lowercase}}Repository->findWithoutFail($id);
-
-        if (empty(${{ model.name | lowercase}})) {{'{'}}
-            return $this->sendError('{{ model.name }} not found');
-        {{'}'}}
-
-        ${{ model.name | lowercase}}->delete();
-
-        return $this->sendResponse($id, '{{ model.name }} deleted successfully');
-    {{'}'}}
-{{'}'}}
-        </code>
-</pre>
+                <pre class="" id="{{model.name}}Controller.php">
+                    <code class="language-php">
+{{ model | compile: 'controller' }}
+                    </code>
+                </pre>
             </md-card-content>
             <md-card-actions>
                 <button md-button color="primary"  (click)="download((model.name +'Controller.php'))">DOWNLOAD</button>
@@ -268,39 +60,11 @@ class {{ model.name }}APIController extends AppBaseController
         </template>
         <md-card class="example-card">
             <md-card-content>
-<pre class="" id="Create{{ model.name }}APIRequest.php">
-    <code class="language-php">
-<?php
-
-namespace App\Http\Requests\API;
-
-use App\Models\{{ model.name }};
-use InfyOm\Generator\Request\APIRequest;
-
-class Create{{ model.name }}APIRequest extends APIRequest
-{{'{'}}
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {{'{'}}
-        return true;
-    {{'}'}}
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {{'{'}}
-        return {{ model.name }}::$rules;
-    {{'}'}}
-{{'}'}}
-        </code>
-</pre>
+                <pre class="" id="Create{{ model.name }}APIRequest.php">
+                    <code class="language-php">
+{{ model | compile:'createRequest' }}
+                    </code>
+                </pre>
             </md-card-content>
             <md-card-actions>
                 <button md-button color="primary" (click)="download(('Create'+ model.name +'APIRequest.php'))">DOWNLOAD</button>
@@ -308,45 +72,18 @@ class Create{{ model.name }}APIRequest extends APIRequest
             </md-card-actions>
         </md-card>
     </md-tab>
+
     <md-tab>
         <template md-tab-label>
             Update Request (<em>Update{{ model.name }}APIRequest.php)</em>
         </template>
         <md-card class="example-card">
             <md-card-content>
-<pre class="" id="Update{{ model.name }}APIRequest.php">
-    <code class="language-php">
-<?php
-
-namespace App\Http\Requests\API;
-
-use App\Models\{{ model.name }};
-use InfyOm\Generator\Request\APIRequest;
-
-class Update{{ model.name }}APIRequest extends APIRequest
-{{'{'}}
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {{'{'}}
-        return true;
-    {{'}'}}
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {{'{'}}
-        return {{ model.name }}::$rules;
-    {{'}'}}
-{{'}'}}
-        </code>
-</pre>
+                <pre class="" id="Update{{ model.name }}APIRequest.php">
+                    <code class="language-php">
+{{ model | compile: 'updateRequest'}}
+                    </code>
+                </pre>
             </md-card-content>
             <md-card-actions>
                 <button md-button color="primary" (click)="download(('Update'+ model.name +'APIRequest.php'))">DOWNLOAD</button>
@@ -354,41 +91,18 @@ class Update{{ model.name }}APIRequest extends APIRequest
             </md-card-actions>
         </md-card>
     </md-tab>
+
     <md-tab>
         <template md-tab-label>
             Repository (<em>Create{{ model.name }}Repository.php)</em>
         </template>
-        <md-card class="example-card" appCompiled>
+        <md-card class="example-card">
             <md-card-content>
-<pre class="" id="Create{{ model.name }}Repository.php">
-    <code class="language-php">
-{{'<'}}?php
-
-namespace App\Repositories;
-
-use App\Models\{{ model.name }};
-use InfyOm\Generator\Common\BaseRepository;
-
-class {{ model.name }}Repository extends BaseRepository
-{{'{'}}
-    /**
-     * @var array
-     */
-    protected $fieldSearchable = [
-
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {{'{'}}
-        return {{ model.name }}::class;
-    {{'}'}}
-{{'}'}}
-
-        </code>
-</pre>
+                <pre class="" id="Create{{ model.name }}Repository.php">
+                    <code class="language-php">
+{{ model | compile:'repository' }}
+                    </code>
+                </pre>
             </md-card-content>
             <md-card-actions>
                 <button md-button color="primary" (click)="download(('Create'+model.name+'Repository.php'))" >DOWNLOAD</button>
@@ -396,4 +110,5 @@ class {{ model.name }}Repository extends BaseRepository
             </md-card-actions>
         </md-card>
     </md-tab>
+
 </md-tab-group>

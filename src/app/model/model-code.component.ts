@@ -12,7 +12,7 @@ export class ModelCodeComponent {
     download (filename) {
         let el = document.getElementById(filename).getElementsByClassName('language-php')[0].innerHTML;
         const pom = document.createElement('a');
-        pom.setAttribute('href', 'data:application/php;charset=utf-8,' + encodeURI(el.replace(/&lt;/g, '<').replace(/&gt;/g, '>') ));
+        pom.setAttribute('href', 'data:application/php;charset=utf-8,' + encodeURI(el.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/<!--([^;]*)-->/g, '') ));
         pom.setAttribute('download', filename);
 
         if (document.createEvent) {
